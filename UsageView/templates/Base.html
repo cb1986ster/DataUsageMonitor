@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>AppUsageLog for: {{ time_len }} {{ time_peroid }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <style>
+        body {
+            padding-top: 4em;
+        }
+        .chart-bar {
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">AppUsageLog for: {{ time_len }} {{ time_peroid }}</a>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url '15m' %}">
+                                Last 15m
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'last_minutes' 60 %}">
+                                Last hour
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'last_peroid' 'days' 1 %}">
+                                Last day
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'last_peroid' 'days' 7 %}">
+                                Last week
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'last_peroid' 'days' 14 %}">
+                                Last two week
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'last_peroid' 'days' 30 %}">
+                                Last 30 days
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <div class="align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        {% block main %}{% endblock %}
+                    </div>
+                </main>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function(){
+                var rxTotal = 0;
+                var txTotal = 0;
+                $('.chart-bar-rx').each((no,node) => {
+                    rxTotal += parseInt(node.dataset['value'])
+                });
+                $('.chart-bar-tx').each((no,node) => {
+                    txTotal += parseInt(node.dataset['value'])
+                });
+                $('.chart-bar-rx').each((no,node) => {
+                    var rx = parseInt(node.dataset['value']);
+                    var p = (100*rx/rxTotal);
+                    $(node).css('width',p + '%').text('RX: ' +Math.round(p)+'%');
+                });
+                $('.chart-bar-tx').each((no,node) => {
+                    var tx = parseInt(node.dataset['value']);
+                    var p = (100*tx/txTotal);
+                    $(node).css('width',p + '%').text('TX: ' +Math.round(p)+'%');
+                });
+            });
+        </script>
+    </body>
+</html>

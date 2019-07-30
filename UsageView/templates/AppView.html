@@ -1,0 +1,7 @@
+{% extends 'Base.html' %}
+
+{% block main %}
+    <h1 style="display:block;">{{ app }}</h1>
+    <hr/>
+    <img  style="display:block; max-width:100%;" src="{% url 'app_usage_image' app time_peroid time_len %}" />
+{% endblock %}

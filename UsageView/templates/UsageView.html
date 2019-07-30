@@ -1,0 +1,32 @@
+{% extends 'Base.html' %}
+
+{% block main %}
+    <table width="100%">
+        {% load utils %}
+        {% for app in logs %}
+        <tr>
+            <th>
+                <a href="{% url 'app_view' app.app time_peroid time_len %}">
+                    {{ app.app }}
+                </a>
+            </th>
+            <td>
+                TX: {{ app.txs|sizify }}
+            </td>
+            <td>
+                RX: {{ app.rxs|sizify }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan=3>
+                <div class="progress chart-bar">
+                    <div data-value="{{ app.rxs }}" class="chart-bar-rx progress-bar bg-info" role="progressbar"></div>
+                </div>
+                <div class="progress chart-bar">
+                    <div data-value="{{ app.txs }}" class="chart-bar-tx progress-bar bg-danger" role="progressbar"></div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
